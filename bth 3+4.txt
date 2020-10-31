@@ -1,0 +1,670 @@
+using System;
+using System.IO.IsolatedStorage;
+
+namespace bài_thực_hành_3
+{// Bai 1
+    class Phanso
+    {
+        private int ts, ms;
+        public Phanso()
+        {
+            ts = 0;
+            ms = 1;
+        }
+
+        public Phanso(int ts, int ms)
+        {
+            this.ts = ts;
+            this.ms = ms;
+        }
+        public void Nhap()
+        {
+            Console.WriteLine("Nhap tu so:");
+            ts = int.Parse(Console.ReadLine());
+            Console.WriteLine("Nhap mau so:");
+            ms = int.Parse(Console.ReadLine());
+
+        }
+        //public void Uscln(int x, int y)
+        //{
+        //    x = Math.Abs(x);
+        //    y = Math.Abs(y);
+        //    while (x != y)
+        //    {
+        //        if (x > y) x = x - y;
+        //        if (y > x) y = y - x;
+        //    }
+
+        //    return x;
+        //}
+        //public Phanso Rutgon()
+        //{
+        //    int uc = Uscln(this.ts, this.ms);
+        //    this.ts = this.ts / uc;
+        //    this.ms = this.ms / uc;
+        //    return this;
+        //}
+        public Phanso Tong(Phanso t2)
+        {
+            Phanso t = new Phanso();
+            t.ts = this.ts * t2.ms + this.ms * t2.ts;
+            t.ms = this.ms * t2.ms;
+            return t;
+        }
+        //public static Phanso operator +(Phanso t1, Phanso t2)
+        //{
+        //    Phanso t = new Phanso();
+        //    t.ts = t1.ts * t2.ms + t1.ms * t2.ts;
+        //    t.ms = t1.ms * t2.ms;
+        //    return t;
+        //}
+
+
+        public Phanso Tong2(Phanso t2)
+        {
+            Phanso t = new Phanso();
+            t.ts = this.ts + this.ms * t2.ts;
+            t.ms = this.ms;
+            return t;
+
+        }
+        public Phanso Tru(Phanso t2)
+        {
+            Phanso t = new Phanso();
+            t.ts = this.ts * t2.ms - this.ms * t2.ts;
+            t.ms = this.ms * t2.ms;
+            return t;
+        }
+        public Phanso Tru2(Phanso t2)
+        {
+            Phanso t = new Phanso();
+            t.ts = this.ts - this.ms * t2.ts;
+            t.ms = this.ms;
+            return t;
+        }
+        public void Hien()
+        {
+            if (ms == 1)
+                Console.WriteLine("{0}", ts);
+            else
+                Console.WriteLine("{0},{1}", ts, ms);
+        }
+    }
+    class App
+    {
+        static void Main()
+        {
+            Phanso t1 = new Phanso();
+            Phanso t2 = new Phanso();
+            Console.WriteLine("Nhap phan so thu 1");
+            t1.Nhap();
+            Console.WriteLine("Nhap phan so thu 1"); t2.Nhap();
+            Console.Write("Tong hai phan so");
+            Phanso t3 = t1.Tong(t2);
+            t3.Hien();
+            Console.Write("Tong phan so voi 1 so ");
+            Phanso t4 = t1.Tong2(6);
+            t4.Hien();
+            Console.Write("Hieu hai phan so");
+            Phanso t5 = t1.Tru(t2);
+            t5.Hien();
+            Console.Write("Hieu phan so voi 1 so la");
+            Phanso t6 = t1.Tru2(8);
+            t6.Hien();
+            Console.ReadKey();
+        }
+    }
+    //bài 2
+    class Units
+    {
+
+        public static double Tinh(int x)
+        {
+            return Math.Pow(x, (float)1 / 3);
+
+        }
+        public static int C(int k, int n)
+        {
+            if (k == 0 || k == n) return 1;
+            if (k == 1) return n;
+            return C(k - 1, n - 1) + C(k, n - 1);
+        }
+        public static int giaithua(int n)
+        {
+            if (n == 0) return 1;
+            else return n * giaithua(n - 1);
+        }
+        public static int A(int k, int n)
+        {
+            if (n == k) return giaithua(n);
+            if (k == 0) return 1;
+            return n * A(k - 1, n - 1);
+        }
+
+    }
+    class App2
+    {
+        static void Main3()
+        {
+            Units t = new Units();
+            Console.WriteLine("Gia tri bieu thuc={0}", Units.Tinh(8));
+            Console.WriteLine("Gia tri bieu thuc C(6,9)={0}", Units.C(6, 9));
+            Console.WriteLine("Gia tri bieu thuc A={0}", Units.A(2, 6));
+            Console.ReadKey();
+        }
+
+    }
+    //bai 3
+    class Time
+    {
+        private int gio, phut, giay;
+        public Time()
+        {
+            gio = 0;
+            phut = 0;
+            giay = 0;
+        }
+        public Time(int gio,int phut,int giay)
+        {
+            this.gio = gio;
+            this.phut = phut;
+            this.giay = giay;
+        }
+        public int Gio
+        {
+            get
+            {
+                return gio;
+            }
+            set
+            {
+                gio = value;
+            }
+        }
+        public int Phut
+        {
+            get
+            {
+                return phut;
+            }
+            set
+            {
+                phut = value;
+            }
+        }
+        public int Giay
+        {
+            get
+            {
+                return giay;
+            }
+            set
+            {
+                giay = value;
+            }
+        }
+        public Time normalize()
+        {
+            this.phut += giay / 60;
+            this.giay = giay % 60;
+            this.gio += phut % 60;
+            this.phut = phut % 60;
+            this.gio = gio % 24;
+            return this;
+        }
+        public Time advance(int gio,int phut,int giay)
+        {
+            Time t = new Time();
+            t.gio = this.gio + gio;
+            t.phut = this.phut + phut;
+            t.giay = this.giay + giay;
+            t.phut += t.giay / 60;
+            t.giay = t.giay % 60;
+            t.gio += t.phut % 60;
+            t.phut = t.phut % 60;
+            t.gio = t.gio % 24;
+            return t;
+
+        }
+        public void print()
+        {
+            Console.WriteLine("Thoi gian:{0}:{1}:{2}", gio, phut, giay);
+        }
+
+    }
+    class Progam
+    {
+        static void Main(string[]args)
+        {
+            Time t = new Time(23, 561, 89);
+            Time t2 = t.normalize();
+            t2.print();
+            Time t3 = t.advance(35, 2, 24);
+            t3.print();
+            Console.ReadKey();
+        }
+    }
+    //bài 4
+    class Hocsinh
+    {
+        private string ten;
+        private double dtoan, dli, dhoa;
+        public void Nhap()
+        {
+            Console.Write("Nhap ten hoc sinh:");
+            ten = Console.ReadLine();
+            Console.Write("Nhap diem toan:");
+            dtoan = double.Parse(Console.ReadLine());
+            Console.Write("Nhap diem li:");
+            dli = double.Parse(Console.ReadLine());
+            Console.Write("Nhap diem hoa:");
+            dhoa = double.Parse(Console.ReadLine());
+        }
+        public double Dtoan
+        {
+            get
+            {
+                return dtoan;
+            }
+            set
+            {
+                if (value >= 0 && value <= 10) dtoan = value;
+            }
+        }
+        public double Dli
+        {
+            get
+            {
+                return dli;
+            }
+            set
+            {
+                if (value >= 0 && value <= 10) dli = value;
+            }
+        }
+        public double Dhoa
+        {
+            get
+            {
+                return dhoa;
+            }
+            set
+            {
+                if (value >= 0 && value <= 10) dhoa = value;
+            }
+        }
+        public void Hien()
+        {
+            Console.WriteLine("Ho ten:{0}\tDiem toan:{1}\tDiem li:{2}\tDiem hoa:{3}", ten, dtoan, dli, dhoa);
+        }
+
+    }
+    class QLHS
+    {
+        private Hocsinh[] ds;
+        private int sohs;
+        public void Nhap()
+        {
+            Console.Write("Nhap so hoc sinh:");
+            sohs = int.Parse(Console.ReadLine());
+            ds = new Hocsinh[sohs];
+            for (int i = 0; i < sohs; i++)
+            {
+                Console.WriteLine("Nhap thong tin cho sinh vien thu {0}", i + 1);
+                ds[i] = new Hocsinh();
+                ds[i].Nhap();
+            }
+        }
+        public void Hien()
+        {
+            for (int i = 0; i < sohs; i++)
+                ds[i].Hien();
+        }
+        public void Dsthilai()
+        {
+
+            Console.WriteLine("Danh sach sinh vien thi lai la");
+            int j = 0;
+            for (int i = 0; i < ds.Length; i++)
+            {
+
+                if (ds[i].Dhoa < 5 || ds[i].Dli < 5 || ds[i].Dtoan < 5)
+                {
+                    ds[i].Hien();
+                    j++;
+                }
+
+
+            }
+            if (j == 0) Console.WriteLine("Khong co hoc sinh nao thi lai!");
+        }
+    }
+    class App3
+    {
+        static void Main4()
+        {
+            QLHS t = new QLHS();
+            t.Nhap();
+            Console.WriteLine("Danh sach hoc sinh ");
+            t.Hien();
+            t.Dsthilai();
+            Console.ReadKey();
+
+        }
+    }
+    //bài thực hành 4
+    //bài 1
+    class Matran
+    {
+        private static int n;
+        private int[,] a;
+        public Matran()
+        {
+            a = new int[n, n];
+        }
+        public static int N
+        {
+            get
+            {
+                return n;
+            }
+            set
+            {
+                if (value >= 2) n = value;
+            }
+        }
+
+        public void Nhap()
+        {
+            for (int i = 0; i < n; i++)
+
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write("Nhap a[{0},{1}]= ", i, j);
+                    a[i, j] = int.Parse(Console.ReadLine());
+                }
+
+        }
+        public void Hien()
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+
+                    Console.Write("{0}\t", a[i, j]);
+            }
+        }
+
+        public Matran Tong(Matran t2)
+        {
+            Matran t = new Matran();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    t.a[i, j] = this.a[i, j] + t2.a[i, j];
+            return t;
+        }
+
+    }
+    class Quanly
+    {
+        private int somt;
+        private Matran[] ds;
+        public void Nhap()
+        {
+            Console.Write("Nhap n="); Matran.N = int.Parse(Console.ReadLine());
+            Console.Write("Nhap so ma tran:"); somt = int.Parse(Console.ReadLine());
+            ds = new Matran[somt];
+            for (int i = 0; i < somt; i++)
+            {
+                Console.WriteLine("Nhap tran thu {0}", i + 1);
+                ds[i] = new Matran();
+                ds[i].Nhap();
+            }
+        }
+        public Matran Tong()
+        {
+            Matran t = new Matran();
+            for (int i = 0; i < somt; i++)
+                t = t.Tong(ds[i]);
+            return t;
+        }
+
+    }
+    class App5
+    {
+        static void Main6()
+        {
+            Quanly q = new Quanly();
+            q.Nhap();
+            q.Tong().Hien();
+            Console.ReadKey();
+        }
+    }
+    //bài 2
+    class Nhanvien
+    {
+        private string Hten, QQ;
+        private double hsl;
+        private static int luongcb = 3000;
+        public static int Luongcb
+        {
+            get
+            {
+                return luongcb;
+            }
+            set
+            {
+                if (value > 3000) luongcb = value;
+            }
+        }
+        public string hten
+        {
+            get
+            {
+                int n = Hten.LastIndexOf(" ");
+                return Hten.Substring(n + 1) + " " + Hten.Substring(0, n);
+            }
+        }
+        public double Hsl
+        {
+            get
+            {
+                return hsl;
+            }
+        }
+        public void Nhap()
+        {
+            Console.Write("Nhap ho ten: "); Hten = Console.ReadLine();
+            Console.Write("Nhap que quan: "); QQ = Console.ReadLine();
+            Console.Write("Nhap he so luong: "); hsl = double.Parse(Console.ReadLine());
+
+        }
+        public double Luong
+        {
+            get
+            {
+                return hsl * luongcb;
+            }
+        }
+        public void Hien()
+
+        {
+            Console.WriteLine("Ho ten\tque quan\tHe so luong\tLuong");
+            Console.WriteLine("{0}\t\t{1}\t{2}\t{3}", Hten, QQ, hsl, Luong);
+        }
+
+
+    }
+    class QLNV
+    {
+        private int sonv;
+        private Nhanvien[] ds;
+        public void Nhap()
+        {
+            Console.Write("Nhap n= "); sonv = int.Parse(Console.ReadLine());
+            ds = new Nhanvien[sonv];
+            for (int i = 0; i < sonv; i++)
+            {
+                Console.WriteLine("Nhap nhan vien thu {0}:", i + 1);
+                ds[i] = new Nhanvien();
+                ds[i].Nhap();
+            }
+        }
+        public void Hien()
+        {
+            for (int i = 0; i < sonv; i++)
+                ds[i].Hien();
+        }
+        public double Maxhsl()
+        {
+            double max = ds[0].Hsl;
+            for (int i = 0; i < sonv; i++)
+                if (ds[i].Hsl > max) max = ds[i].Hsl;
+            return max;
+        }
+        public void HienMaxhsl()
+        {
+            double max = Maxhsl();
+            for (int i = 0; i < sonv; i++)
+                if (ds[i].Hsl == max) ds[i].Hien();
+        }
+        public void Sapxep()
+        {
+            for (int i = 0; i < sonv - 1; i++)
+                for (int j = i + 1; j < sonv; j++)
+                    if (string.Compare(ds[i].hten, ds[i].hten) > 0)
+                    {
+                        Nhanvien t = ds[i];
+                        ds[i] = ds[j];
+                        ds[j] = t;
+                    }
+        }
+    }
+    class App6
+    {
+        static void Main7()
+        {
+            QLNV t = new QLNV();
+            t.Nhap();
+            Console.WriteLine("Nhan vien co hsl max la");
+            t.HienMaxhsl();
+            Console.WriteLine("Nhan vien sau khi sap xep:");
+            t.Sapxep();
+            t.Hien();
+            Console.ReadKey();
+        }
+    }
+    //bài 3
+    class Person
+    {
+        private string Hoten;
+        private int namsinh;
+        private int[] dthi;
+        public void Nhap()
+        {
+            Console.Write("Nhap ho ten:"); Hoten = Console.ReadLine();
+
+            Console.Write("Nam sinh: "); namsinh = int.Parse(Console.ReadLine());
+            dthi = new int[9];
+
+            for (int i = 0; i < 9; i++)
+            {
+                Console.Write("Nhap dthi thu {0}=", i + 1); dthi[i] = int.Parse(Console.ReadLine());
+            }
+        }
+        public int Ktr()
+        {
+            if (Ktra() == false)
+            {
+                if (Dtb() > 7)
+                {
+                    return 1;
+                }
+                else return -1;
+            }
+            else return 0;
+
+        }
+
+        public bool Ktra()
+        {
+            for (int i = 0; i < 9; i++)
+
+                if (dthi[i] < 5)
+                    return true;
+
+            return false;
+        }
+        public int Dtb()
+        {
+            int t = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                t += dthi[i];
+
+            }
+            return t / 9;
+
+        }
+    }
+    class QLP
+    {
+        private int n;
+        private Person[] ds;
+        public void Nhap()
+        {
+            Console.Write("Nhap so sinh vien:"); n = int.Parse(Console.ReadLine());
+            ds = new Person[n];
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("Nhap sinh vien thu {0}", i + 1);
+                ds[i] = new Person();
+                ds[i].Nhap();
+            }
+        }
+
+        public int SOsvlamlv()
+        {
+            int a = 0;
+            for (int i = 0; i < n; i++)
+                if (ds[i].Ktr() == 1)
+                    a++;
+            return a;
+
+        }
+        public int SOsvttn()
+        {
+            int a = 0;
+            for (int i = 0; i < n; i++)
+                if (ds[i].Ktr() == -1)
+                    a++;
+            return a;
+
+        }
+        public int SOsvtl()
+        {
+            int a = 0;
+            for (int i = 0; i < n; i++)
+                if (ds[i].Ktr() == 0)
+                    a++;
+            return a;
+
+        }
+    }
+    class App7
+    {
+        static void Main8()
+        {
+            QLP t = new QLP();
+            t.Nhap();
+            Console.WriteLine("So sinh vien duoc lam luan van la:{0}", t.SOsvlamlv());
+            Console.WriteLine("So sinh vien duoc thi tot nghiep la:{0}", t.SOsvttn());
+            Console.WriteLine("So sinh vien thi lai la:{0}", t.SOsvtl());
+            Console.ReadKey();
+        }
+    }
+}
+
+
+
+
